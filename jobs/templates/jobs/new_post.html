@@ -1,0 +1,75 @@
+{% extends "jobs/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'jobs/new_post.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<div id="message"></div>
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+	<div class="row">
+	    
+	    <div class="col-md-8 col-md-offset-2">
+	        
+    		<h1>Post a new job:</h1>
+    		
+    		<form action="{% url 'new_post' %}" method="POST">
+    		    
+    		    <div class="form-group has-error">
+    		        <label for="title">Title <span class="required">*</span></label>
+    		        <input id="title" type="text" class="form-control" name="title"/>
+    		    </div>
+
+    		    
+    		    <div class="form-group">
+    		        <label for="description">Description</label>
+    		        <textarea id="description" rows="5" class="form-control" name="description" ></textarea>
+    		    </div>
+    		    <div class="form-group">
+					<label for="max_participants">Amount of participants</label>
+					<input id="max_participants" type="number" class="form-control" name="max_participants" min="1"/>
+				</div>
+    		    <div class="form-group">
+					<label for="price">Price</label>
+					<input id="price" type="number" class="form-control" name="price" min="50"/>
+				</div>
+				<div class="form-group">
+					<label for="total_price">Total Price</label>
+					<div class="input-group">
+						<input id="total_price" type="number" aria-label="Dollar amount (with dot and two decimal places)" class="form-control" max="{{ request.user.wallet.balance }}" name="total_price" disabled  />
+						<span class="input-group-text">DZD</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="your_balance">Your balance:</label>
+					<div class="input-group">
+						<input id="balance" value="{{ request.user.wallet.balance }}" aria-label="Dollar amount (with dot and two decimal places)" class="form-control" name="your_balance" disabled />
+						<span class="input-group-text">DZD</span>
+					</div>
+				</div>
+				
+				
+    		    <p></p>
+    		    
+    		    <div class="form-group">
+    		        <button id="submit" type="submit" class="btn btn-primary" disabled>
+    		            Create
+    		        </button>
+    		        <button id="cancel" class="btn btn-default">
+    		            Reset
+    		        </button>
+    		    </div>
+    		    
+    		</form>
+		</div>
+		
+	</div>
+</div>
+
+{% endblock %}

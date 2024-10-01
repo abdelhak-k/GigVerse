@@ -1,0 +1,30 @@
+{% extends "jobs/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    {% for proof in proofs %}
+    <div class="proof-item">
+        <div class="proof-details">
+            <div class="row">
+            <div class="col">
+                <a class="no-underline" href="{% url 'job' proof.job.id %}"><h5>{{ proof.job.title }}</h5></a>
+            </div>
+            <div class="col">
+            {% if proof.status == 'approved' %}
+                <i class="fas fa-check-circle" style="color: green;" title="Approved">+ {{ proof.job.price}}DZD</i>
+            {% elif proof.status == 'declined' %}
+                <i class="fas fa-times-circle" style="color: red;" title="Declined">{{proof.job.price}}DZD</i>
+            {% elif proof.status == 'no-status' %}
+                <i class="fas fa-exclamation-circle" style="color: orange;" title="No Status">{{proof.job.price}}DZD</i>
+            {% endif %}
+            </div>
+            </div>
+        </div>
+        {% if proof.image %}
+            <img src="{{ proof.image.url }}" alt="Proof Image" class="img-fluid proof-image" />
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

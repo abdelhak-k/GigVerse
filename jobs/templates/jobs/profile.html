@@ -1,0 +1,30 @@
+{% extends "jobs/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Profile of {{ user_profile.username }}</h1>
+            
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Jobs Published:</strong> {{ jobs_published_count }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Jobs Approved:</strong> {{ jobs_approved_count }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Jobs Declined:</strong> {{ jobs_declined_count }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Pending Jobs:</strong> {{ jobs_pending_count }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Wallet Balance:</strong> {{ wallet_balance }} DZD
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

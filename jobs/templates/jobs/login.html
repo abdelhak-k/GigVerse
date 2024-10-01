@@ -1,0 +1,34 @@
+{% extends "jobs/layout.html" %}
+{% load static %}
+{% block body %}
+
+<div class="wrapper">
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <div class="logo">
+        <img class="img-fluid" src="{% static 'images/logo.png' %}" alt="Logo">
+    </div>
+    <div class="text-center mt-4 name">
+        GigVerse
+    </div>
+
+    <form class="p-3 mt-3" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-field d-flex align-items-center">
+            <span class="far fa-user"></span>
+            <input autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-field d-flex align-items-center">
+            <span class="fas fa-key"></span>
+            <input type="password" name="password" placeholder="Password">
+        </div>
+        <input class="btn mt-3" type="submit" value="Login">
+        <div class="text-center fs-6 ">
+            Don't have an account? <a href="{% url 'register' %}">Sign up</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

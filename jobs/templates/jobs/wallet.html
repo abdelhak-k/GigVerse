@@ -1,0 +1,36 @@
+{% extends "jobs/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    {% if wallet %}
+    <p>Balance: <span id="balance">{{ wallet.balance }}</span> DZD</p>
+    <p>Pending: <span id="pending">{{ pending }}</span> DZD</p>
+
+    <!-- Deposit Form -->
+    <form id="deposit-form" method="post" action="{% url 'deposit' %}">
+        {% csrf_token %}
+        <h4>Deposit</h4>
+        <div class="mb-3">
+            <label for="deposit-amount" class="form-label">Amount</label>
+            <input type="number" id="deposit-amount" name="amount" class="form-control" placeholder="Enter amount to deposit" required>
+        </div>
+        <button type="submit" class="btn btn-success">Deposit</button>
+    </form>
+
+    <!-- Withdrawal Form -->
+    <form id="withdrawal-form" method="post" action="{% url 'withdrawal' %}">
+        {% csrf_token %}
+        <h4>Withdraw</h4>
+        <div class="mb-3">
+            <label for="withdrawal-amount" class="form-label">Amount</label>
+            <input type="number" id="withdrawal-amount" name="amount" class="form-control" placeholder="Enter amount to withdraw" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Withdraw</button>
+    </form>
+    
+    {% else %}
+        <p>You don't have a wallet yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

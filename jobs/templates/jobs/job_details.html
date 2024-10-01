@@ -1,0 +1,82 @@
+{% extends "jobs/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div id="job-card" class="job-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <h2 class="card-title col-8">{{ job.title }}</h2>
+                    <p class="col-4">{{ job.price }} DZD</p>
+                </div>
+                <h5 class="card-subtitle mb-2 text-muted">Posted on: {{ job.date_posted }}</h5>
+                <a href="{% url 'profile' user_id=job.owner.id %}" class="no-underline"><h6 class="card-subtitle mb-2 text-muted">Owner: {{ job.owner }}</h6></a>
+                <p class="card-text">Job Description:</p>
+                <p class="card-text">{{ job.description }}</p>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-primary">Max Participants: {{ job.max_participants }}</span>
+                        <span class="badge bg-secondary ms-2">Participants Done: {{ job.participants.count }}</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.history.back()">Back</button>
+                </div>
+                <hr>
+                {% if request.user == job.owner %}
+                    <h4>Submitted Proofs</h4>
+                    {% if proofs %}
+                        <ul>
+                            {% for proof in proofs %}
+                            <div id="div_{{ proof.id }}">
+                                <li>
+                                    <p><strong>User:</strong><a class="no-underline" href="{% url 'profile' user_id=proof.owner.id %}">{{ proof.owner.username }}</a></p><a>
+                                    <p><strong>Description:</strong> {{ proof.description }}</p>
+                                    {% if proof.image %}
+                                        <p><strong>Proof Image:</strong> <img src="{{ proof.image.url }}" alt="Proof Image" style="max-width: 720px;"></p>
+                                    {% endif %}
+                                </li>
+                                <hr>
+                                <button class="approve btn btn-outline-primary" type="button" data-proof-id="{{ proof.id }}">Approve</button>
+                                <button class="decline btn btn-outline-danger" type="button" data-proof-id="{{ proof.id }}">Decline</button>
+                            </div>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No proofs have been submitted yet.</p>
+                    {% endif %}
+                    {% else %}
+                
+                    <!--proof submission -->
+                {% if valid %}
+                    {% if job_done %}
+                        <p class="text-warning">You have already completed this job.</p>
+                    {% else %}
+                        <div class="mt-4">
+                            <h4>Submit Your Proof</h4>
+                            <form action="{% url 'submit_proof' job.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="proof_description" class="form-label">Proof Description</label>
+                                    <textarea id="proof_description" name="proof_description" class="form-control" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="proof_image" class="form-label">Upload Proof Image (optional)</label>
+                                    <input id="proof_image" name="proof_image" type="file" class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-success">Submit Proof</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p class="text-danger">The job has enough participants.</p>
+            {% endif %} 
+            {% endif %}           
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'jobs/job_proof.js' %}"></script>
+
+{% endblock %}
